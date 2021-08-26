@@ -2,7 +2,7 @@
   <div class="head">
     <div class="m-top">
       <div class="warp">
-        <h1 class="logo" @click="logo()">
+        <h1 class="logo">
           <a hidefocus="true" href="/#">网易云音乐{{searchKey.value}}</a>
         </h1>
         <Navbar/>
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { ref,reactive,defineComponent,onMounted,computed } from 'vue';
-import Navbar from './navbar.vue';
+import Navbar from './navbar.vue';  
 
 
 export default defineComponent({
@@ -33,15 +33,8 @@ export default defineComponent({
   setup(){
     const searchKey = ref('');
 
-    const logo = ():void=>{
-      console.log('111');
-      searchKey.value = '2'
-    }
-
-
     return{
       searchKey,
-      logo
     }
   }
 });

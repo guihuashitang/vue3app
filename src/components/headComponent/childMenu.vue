@@ -46,10 +46,12 @@ export default defineComponent({
     background-color: #C20C0C;
     border-bottom: 1px solid #a40011;
     ul{
-        margin-left: 200px;
         list-style: none;
         height: 35px;
         justify-content: flex-start;
+        width: 1100px;
+        margin: 0 auto;
+        padding-left: 196px;
         li{
             a{
                 display: block;
