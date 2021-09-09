@@ -2,6 +2,7 @@
   <div class="home">
     <HeadNav/>
     <ChildMenu/>
+    <router-view></router-view>
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <template>
     <div class="nav">
         <ul class="flexR">
-            <li v-for="item in navList" :key="item.name">
+            <li v-for="item in navList" :key="typeof item.name=='string'?item.name:''">
                 <a @click="changeMenu(item.name,item)" :class="{'activeStyle':item.name==activeMenu}" hidefocus="true">
-                    <em>{{item.meta.title}}</em>
+                    <em>{{item.meta?item.meta.title:''}}</em>
                     <sup class="normalSup" :class="{'hotSup':hotMenu.includes(item.name),'activeSup':item.name==activeMenu}">&nbsp;</sup>
                 </a>
             </li>
@@ -23,7 +23,7 @@ export default defineComponent({
         const navList = reactive(routes);
         const activeMenu = computed(()=>store.getters.activeMenu);
         const hotMenu = computed(()=>store.state.app.hotMenu);
-        const changeMenu = (name:string,data:any)=>{
+        const changeMenu = (name:any,data:any)=>{
             if(name==store.getters.activeMenu) return
             store.dispatch('setActiveMenu',name)
             if(data.children){

@@ -7,6 +7,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'Home',
     meta: {
       title: '发现音乐',
+      id:'Home',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue'),
     children: [
@@ -15,6 +16,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: 'Recommend',
         meta: {
           title: '推荐',
+          id:'Recommend',
         },
         component: () => import(/* webpackChunkName: "about" */ '../views/recommend/recommend.vue'),
       },
@@ -25,6 +27,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'About1',
     meta: {
       title: '我的音乐',
+      id:'About1',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
@@ -33,6 +36,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'About2',
     meta: {
       title: '朋友',
+      id:'About2',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
@@ -41,6 +45,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'About3',
     meta: {
       title: '商城',
+      id:'About3',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
@@ -49,6 +54,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'About4',
     meta: {
       title: '音乐人',
+      id:'About4',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
@@ -57,9 +63,10 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'downLoadApp',
     meta: {
       title: '下载客户端',
+      id:'downLoadApp',
     },
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
+  }
 ]
 
 const router = createRouter({

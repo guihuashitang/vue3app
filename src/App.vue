@@ -6,8 +6,13 @@
 
 <style lang="scss">
 @import 'style/common.scss';
+*{
+  box-sizing: border-box;
+}
 body{
   min-width: $baseWidth;
+  background: #f5f5f5;
+  font-size: 12px;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

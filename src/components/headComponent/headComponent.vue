@@ -3,7 +3,7 @@
     <div class="m-top">
       <div class="warp">
         <h1 class="logo">
-          <a hidefocus="true" href="/#">网易云音乐{{searchKey.value}}</a>
+          <a hidefocus="true" href="/#">网易云音乐</a>
         </h1>
         <Navbar/>
         <div class="login">
