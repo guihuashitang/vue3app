@@ -36,6 +36,7 @@ export default defineComponent({
 .ReTitle{
     height: 33px;
     line-height: 33px;
+    margin-bottom: 20px;
     padding: 0 10px 0 34px;
     background-position: -225px -156px;
     border-bottom: 2px solid #C10D0C;

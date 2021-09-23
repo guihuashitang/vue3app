@@ -15,9 +15,11 @@
                 <a class="arr-btn right-btn" hidefocus="true" href="javascript:void(0)"><i class="iconfont icon-fanhuijiantouxiangqingye"></i></a>
             </div>
         </div>
-        <div class="main-div flexR">
+        <div class="main-div flexR"> 
             <div class="m-left">
                 <HotSongs/>
+                <NewSong/>
+                <RankList/>
             </div>
             <div class="m-right"></div>
         </div>
@@ -26,13 +28,17 @@
 
 <script lang="ts">
 import { ref,defineComponent,onMounted, resolveDirective } from 'vue';
-import HotSongs from './hotSongs.vue'
+import HotSongs from './hotSongs.vue';
+import NewSong from './newSong.vue';
+import RankList from './rankList.vue';
 import { getBanners } from './recommend';
 
 export default defineComponent({
   name: 'Recommend',
   components: {   
     HotSongs,
+    NewSong,
+    RankList,
 },
   setup(){
         let bannerList:any = ref([]); 
