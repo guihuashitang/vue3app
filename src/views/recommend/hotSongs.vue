@@ -46,7 +46,6 @@ export default defineComponent({
             const hotData = async()=>{
                 getHotDay().then((res:any)=>{
                     hotList.value = res.result
-                    console.log('hotList',hotList)
                 })
             }
             onMounted(()=>{

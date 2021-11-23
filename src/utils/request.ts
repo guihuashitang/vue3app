@@ -3,7 +3,7 @@ axios.defaults.withCredentials = true
 // create an axios instance
 console.log(process.env.BASE_API)
 const service = axios.create({
-  baseURL: 'http://localhost:3000/',
+  baseURL: process.env.VUE_APP_BASE_URL,
   // baseURL: process.env.BASE_API,
   timeout: 50000, // request timeout
 })
@@ -17,7 +17,7 @@ service.interceptors.request.use((config: AxiosRequestConfig) => {
   // Do something with request error
   // for debug
   Promise.reject(error)
-})
+})  
 
 // respone interceptor
 service.interceptors.response.use(

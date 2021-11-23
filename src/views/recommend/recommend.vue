@@ -1,18 +1,23 @@
 <template>
     <div class="Recommend">
-        <div class="banner-top" :style="{'backgroundImage': `url(${bannerList.length?bannerList[0].imageUrl:''}?imageView&blur=40x20)`}">
+        <div class="banner-top" :style="{'backgroundImage': `url(${bannerList.length?bannerList[indexSort].imageUrl:''}?imageView&blur=40x20)`}">
             <div class="banner-warp">
                 <div class="warp-in flexR">
                     <div class="ban-img">
-                        <img :src="bannerList.length?bannerList[0].imageUrl+'?imageView&quality=89':''" alt="">
+                        <img :src="bannerList.length?bannerList[indexSort].imageUrl+'?imageView&quality=89':''" alt="">
+                        <ul class="dots flexR">
+                            <li class="flexR" v-for="(item,num) in bannerList.length" @click="toDotBanner(num)" :key="num+''">
+                                <a :class="{'dot-active':indexSort==num}" href="javascript:void(0)"></a>
+                            </li>
+                        </ul>
                     </div>
                     <div class="downLoad">
                         <a class="down-btn" hidefocus="true" href="javascript:void(0)"></a>
                         <p>PC 安卓 iPhone WP iPad Mac 六大客户端</p>
                     </div>
                 </div>
-                <a class="arr-btn left-btn" hidefocus="true" href="javascript:void(0)"><i class="iconfont icon-fanhuijiantouxiangqingye"></i></a>
-                <a class="arr-btn right-btn" hidefocus="true" href="javascript:void(0)"><i class="iconfont icon-fanhuijiantouxiangqingye"></i></a>
+                <a class="arr-btn left-btn" hidefocus="true" @click="changeBanner('pre','')" href="javascript:void(0)"><i class="iconfont icon-fanhuijiantouxiangqingye"></i></a>
+                <a class="arr-btn right-btn" hidefocus="true" @click="changeBanner('next','')" href="javascript:void(0)"><i class="iconfont icon-fanhuijiantouxiangqingye"></i></a>
             </div>
         </div>
         <div class="main-div flexR"> 
@@ -21,43 +26,114 @@
                 <NewSong/>
                 <RankList/>
             </div>
-            <div class="m-right"></div>
+            <div class="m-right">
+                <Aside/>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { ref,defineComponent,onMounted, resolveDirective } from 'vue';
+import { ref,defineComponent,onMounted, resolveDirective, reactive } from 'vue';
 import HotSongs from './hotSongs.vue';
 import NewSong from './newSong.vue';
 import RankList from './rankList.vue';
+import Aside from './aside.vue';
 import { getBanners } from './recommend';
 
 export default defineComponent({
-  name: 'Recommend',
-  components: {   
-    HotSongs,
-    NewSong,
-    RankList,
-},
-  setup(){
+    name: 'Recommend',
+    components: {   
+        HotSongs,
+        NewSong,
+        RankList,
+        Aside
+    },
+    setup(){
         let bannerList:any = ref([]); 
+        let indexSort:any = ref(0);
+        let banSetting:any = reactive({
+            autoplay: false,
+            speed: 5000,
+        })
+        let time:any = ref(null);
+
+        const autoPlayFun = async()=>{
+            if(!banSetting.autoplay) return
+            time.value = setInterval(()=>{
+                changeBanner('next','auto')
+            },banSetting.speed)
+        }
 
         const getBannersList = async()=>{
-            console.log('12aaa')
-            getBanners().then((res:any)=>{
-                bannerList.value = res.banners
-                console.log('bannerList',bannerList)
+            return new Promise((resolve,reject)=>{
+                getBanners().then((res:any)=>{
+                    bannerList.value = res.banners;
+                    preLoadImg(bannerList.value)
+                    resolve(res);
+                })
             })
         }
-        onMounted(()=>{
-          getBannersList()
+
+        //预加载
+        const preLoadImg = async(imgList:Array<any>)=>{
+            return new Promise((resolve,reject)=>{
+                let arr = [];
+                let bgArr = [];
+                for(let i=0;i<imgList.length;i++){
+                    arr[i] = new Image();
+                    arr[i].src = imgList[i].imageUrl + '?imageView&quality=89';
+                    bgArr[i] = new Image(); 
+                    bgArr[i].src = imgList[i].imageUrl + '?imageView&blur=40x20';
+                }
+                if(bgArr.length==imgList.length){
+                    resolve({arr,bgArr});
+                }
+            })
+        }
+
+        const changeBanner = async(type:string,auto:string)=>{
+            if(!auto){
+                clearInterval(time.value);
+                time.value = null;
+            }
+            if(type=='pre'){
+                if(indexSort.value==0){
+                    indexSort.value = bannerList.value.length-1;
+                    return
+                }
+                indexSort.value--
+            }else{
+                if(indexSort.value==bannerList.value.length-1){
+                    indexSort.value = 0;
+                    return
+                }
+                indexSort.value++
+            }
+            if(!auto){
+                autoPlayFun();
+            }
+        }
+
+        const toDotBanner = async(index:number)=>{
+            indexSort.value = index
+        }
+
+        
+        
+        onMounted(async()=>{
+          await getBannersList();
+          await preLoadImg(bannerList.value);
+          autoPlayFun();
         })
         
         return {
-            bannerList
+            bannerList,
+            indexSort,
+            changeBanner,
+            toDotBanner
         }
-  }
+    }
 });
 </script>
 
@@ -82,11 +158,42 @@ export default defineComponent({
             position: relative;
             .ban-img{
                 width: 730px;
+                position: relative;
                 img{
                     display: block;
                     width: 730px;
                     height: 284px;
                     backface-visibility: hidden;
+                }
+                .dots{
+                    margin: 0;
+                    list-style: none;
+                    position: absolute;
+                    width: 100%;
+                    height: 20px;
+                    top: 259px;
+                    left: 0;
+                    cursor: pointer;
+                    li{
+                        width: 20px;
+                        height: 20px;
+                        a{
+                            display: block;
+                            border-radius: 100%;
+                            width: 5px;
+                            height: 5px;
+                            background: #fff;
+                            &.dot-active{
+                                background: #c10d0c;
+                            }
+                        }
+                        &:hover{
+                            a{
+                                background: #c10d0c;
+                            }
+                        }
+                       
+                    }
                 }
             }
             .downLoad{
